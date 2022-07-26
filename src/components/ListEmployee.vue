@@ -2,6 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="employees"
+    :search="search"
     sort-by="firstname"
     hide-default-footer
     class="elevation-1"
@@ -10,6 +11,16 @@
       <v-toolbar
         flat
       >
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          placeholder="Поиск"
+          single-line
+          hide-details
+        ></v-text-field>
+
+        <v-spacer></v-spacer>
+
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -131,6 +142,10 @@
     <template v-slot:no-data>
       <h2>Сотрудники отсутствуют</h2>
     </template>
+
+    <template v-slot:no-results>
+      <p>Нет совпадений</p>
+    </template>
   </v-data-table>
 </template>
 
@@ -139,6 +154,7 @@ export default {
   name: 'ListEmployee',
   data () {
     return {
+      search: '',
       dialog: false,
       dialogDelete: false,
       headers: [
