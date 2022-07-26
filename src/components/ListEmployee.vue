@@ -386,7 +386,7 @@ export default {
     showAllInfo (item) {
       this.$router.push({
         path: `/${item.id}`,
-        query: { item: item }
+        query: { item: JSON.stringify(item) }
       })
     },
 

@@ -1,11 +1,14 @@
 <template>
-  <div class="about">
-    <h1>TEST {{ $route.query.item }}</h1>
-  </div>
+  <ItemEmployee :item='$route.query.item' />
 </template>
 
 <script>
+import ItemEmployee from '@/components/ItemEmployee.vue'
+
 export default {
   name: 'EmployeeView',
+  components: {
+    ItemEmployee
+  }
 }
 </script>
