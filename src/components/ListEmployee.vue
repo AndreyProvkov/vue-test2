@@ -249,6 +249,7 @@ export default {
       employees: [],
       editedIndex: -1,
       editedEmployer: {
+        id: 0,
         firstname: '',
         surname: '',
         patronymic: '',
@@ -259,6 +260,7 @@ export default {
         time: ''
       },
       defaultEmployer: {
+        id: 0,
         firstname: '',
         surname: '',
         patronymic: '',
@@ -283,10 +285,17 @@ export default {
     dialogDelete (val) {
       val || this.closeDelete()
     },
+    employees () {
+      localStorage.setItem('listEmployees', JSON.stringify(this.employees))
+    }
   },
 
   created () {
-    this.initialize()
+    if (!localStorage.getItem('listEmployees')) {
+      this.initialize()
+      localStorage.setItem('listEmployees', JSON.stringify(this.employees))
+    }
+    this.employees = JSON.parse(localStorage.getItem('listEmployees'))
   },
 
   methods: {
@@ -426,7 +435,9 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         Object.assign(this.employees[this.editedIndex], this.editedEmployer)
+        localStorage.setItem('listEmployees', JSON.stringify(this.employees))
       } else {
+        this.editedEmployer.id = new Date().getTime()
         this.employees.push(this.editedEmployer)
       }
       this.close()
