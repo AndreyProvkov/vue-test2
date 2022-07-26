@@ -43,14 +43,18 @@
             </v-card-title>
 
             <v-card-text>
-              <v-container>
+              <v-form ref="form"
+                      v-model="valid"
+                      lazy-validation
+              >
+                <v-container>
                 <v-row>
                   <v-col
                     cols="12"
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                    <v-text-field required :rules="[v => !!v || 'Обязательное поле']"
                       v-model="editedEmployer.firstname"
                       label="Имя"
                     ></v-text-field>
@@ -60,7 +64,7 @@
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                    <v-text-field required :rules="[v => !!v || 'Обязательное поле']"
                       v-model="editedEmployer.surname"
                       label="Фамилия"
                     ></v-text-field>
@@ -70,7 +74,7 @@
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                    <v-text-field required :rules="[v => !!v || 'Обязательное поле']"
                       v-model="editedEmployer.patronymic"
                       label="Отчество"
                     ></v-text-field>
@@ -80,7 +84,7 @@
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                    <v-text-field required :rules="[v => !!v || 'Обязательное поле']"
                       v-model="editedEmployer.jobtitle"
                       label="Должность"
                     ></v-text-field>
@@ -100,7 +104,7 @@
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                    <v-text-field required :rules="salaryRules"
                       v-model.number="editedEmployer.salary"
                       label="Оклад"
                     ></v-text-field>
@@ -120,6 +124,8 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
+                          required
+                          :rules="[v => !!v || 'Обязательное поле']"
                           v-model="editedEmployer.startDate"
                           label="Дата выхода на работу"
                           prepend-icon="mdi-calendar"
@@ -140,6 +146,8 @@
                     md="4"
                   >
                     <v-select
+                      required
+                      :rules="[v => !!v || 'Обязательное поле']"
                       v-model.number="editedEmployer.time"
                       :items="times"
                       label="Ставка"
@@ -147,6 +155,8 @@
                   </v-col>
                 </v-row>
               </v-container>
+              </v-form>
+              
             </v-card-text>
 
             <v-card-actions>
@@ -159,9 +169,10 @@
                 Отмена
               </v-btn>
               <v-btn
+                :disabled="!valid"
                 color="blue darken-1"
                 text
-                @click="save"
+                @click="validate()"
               >
                 Сохранить
               </v-btn>
@@ -225,8 +236,13 @@ export default {
     return {
       search: '',
       dialog: false,
+      valid: true,
       dialogDelete: false,
       menuDate: false,
+      salaryRules: [
+        v => !!v || 'Обязательное поле',
+        v => v > 0 || 'Оклад должен быть числом больше 0',
+      ],
       times: ['Полная', 'Половина'],
       headers: [
         { text: 'Имя', value: 'firstname' },
@@ -418,6 +434,7 @@ export default {
 
     close () {
       this.dialog = false
+      this.$refs.form.resetValidation()
       this.$nextTick(() => {
         this.editedEmployer = Object.assign({}, this.defaultEmployer)
         this.editedIndex = -1
@@ -441,6 +458,15 @@ export default {
         this.employees.push(this.editedEmployer)
       }
       this.close()
+    },
+
+    validate () {
+      this.$refs.form.validate()
+      this.$nextTick(() => {
+        if (this.valid) {
+          this.save()
+        }
+      })
     }
   }
 }
