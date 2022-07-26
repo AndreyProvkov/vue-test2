@@ -199,6 +199,15 @@
       </v-icon>
     </template>
 
+    <template v-slot:[`item.showAll`]="{ item }">
+      <v-icon
+        small
+        @click="showAllInfo(item)"
+      >
+        mdi-open-in-new
+      </v-icon>
+    </template>
+
     <template v-slot:no-data>
       <h2>Сотрудники отсутствуют</h2>
     </template>
@@ -227,6 +236,12 @@ export default {
         { 
           text: 'Действие',
           value: 'actions',
+          sortable: false,
+          filterable: false
+        },
+        { 
+          text: '',
+          value: 'showAll',
           sortable: false,
           filterable: false
         }
@@ -278,6 +293,7 @@ export default {
     initialize () {
       this.employees = [
         {
+          id: 0,
           firstname: 'Эстелла',
           surname: 'Щербакова',
           patronymic: 'Борисовна',
@@ -288,6 +304,7 @@ export default {
           time: 'Полная'
         },
         {
+          id: 1,
           firstname: 'Иоанна',
           surname: 'Красильникова',
           patronymic: 'Христофоровна',
@@ -298,6 +315,7 @@ export default {
           time: 'Половина'
         },
         {
+          id: 2,
           firstname: 'Марфа',
           surname: 'Мэлсовна',
           patronymic: 'Мельникова',
@@ -308,6 +326,7 @@ export default {
           time: 'Половина'
         },
         {
+          id: 3,
           firstname: 'Мэри',
           surname: 'Субботина',
           patronymic: 'Антониновна',
@@ -318,6 +337,7 @@ export default {
           time: 'Полная'
         },
         {
+          id: 4,
           firstname: 'Аким',
           surname: 'Марков',
           patronymic: 'Куприянович',
@@ -328,6 +348,7 @@ export default {
           time: 'Половина'
         },
         {
+          id: 5,
           firstname: 'Лев',
           surname: 'Субботин',
           patronymic: 'Львович',
@@ -338,6 +359,7 @@ export default {
           time: 'Полная'
         },
         {
+          id: 6,
           firstname: 'Валерий',
           surname: 'Коновалов',
           patronymic: 'Геннадиевич',
@@ -348,6 +370,7 @@ export default {
           time: 'Полная'
         },
         {
+          id: 7,
           firstname: 'Артур',
           surname: 'Ситников',
           patronymic: 'Лукьевич',
@@ -358,6 +381,13 @@ export default {
           time: 'Половина'
         }
       ]
+    },
+
+    showAllInfo (item) {
+      this.$router.push({
+        path: `/${item.id}`,
+        query: { item: item }
+      })
     },
 
     editEmployer (item) {

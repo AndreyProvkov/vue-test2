@@ -1,21 +1,13 @@
 <template>
   <v-app>
     <v-main>
-      <ListEmployee />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import ListEmployee from "@/components/ListEmployee.vue"
-
 export default {
   name: 'App',
-  components: {
-    ListEmployee
-  },
-  data: () => ({
-    //
-  }),
 };
 </script>
